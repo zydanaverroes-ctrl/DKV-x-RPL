@@ -1,0 +1,67 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #fff;
+  font-family: sans-serif;
+}
+
+.loader-container {
+  text-align: center;
+}
+
+/* BOWL */
+.bowl {
+  width: 180px;
+  height: 90px;
+  background: #000;
+  border-bottom-left-radius: 180px;
+  border-bottom-right-radius: 180px;
+  overflow: hidden;
+  position: relative;
+}
+
+.wave {
+  width: 200%;
+  height: 200%;
+  background: #444;
+  position: absolute;
+  top: 40%;
+  left: -50%;
+  animation: waveMove 4s linear infinite;
+  border-radius: 40%;
+}
+
+@keyframes waveMove {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#percent {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 30px;
+  font-size: 45px;
+  font-weight: bold;
+  color: white;
+}
+
+/* PROGRESS BAR */
+.progress-bar {
+  margin-top: 25px;
+  width: 200px;
+  height: 20px;
+  border: 3px solid #000;
+  border-radius: 30px;
+  padding: 3px;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #000;
+  border-radius: 30px;
+  transition: width 0.2s ease;
+}

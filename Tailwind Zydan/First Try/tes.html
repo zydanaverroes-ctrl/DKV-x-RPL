@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         /* Inner circle */
+ /* INNER CORE */
+#cursor-inner {
+  width: 30px;
+  height: 30px;
+  background: white;
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+
+  box-shadow:
+    0 0 15px rgba(120, 200, 255, 1),
+    0 0 25px rgba(120, 220, 255, 0.9),
+    0 0 45px rgba(120, 240, 255, 0.7);
+}
+
+/* OUTER RING */
+#cursor-outer {
+  width: 55px;
+  height: 55px;
+  border: 2px solid rgba(150, 220, 255, 0.8);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: 120ms ease-out;
+  z-index: 9998;
+
+  box-shadow:
+    0 0 25px rgba(120, 200, 255, .6),
+    0 0 55px rgba(120, 200, 255, .4),
+    0 0 85px rgba(120, 200, 255, .3);
+
+  animation: infinityPulse 1.4s ease-in-out infinite;
+}
+
+/* INFINITY PULSE */
+@keyframes infinityPulse {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: .8; filter: blur(1.3px);}
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* AFTERIMAGE TRAIL */
+#cursor-trail {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9997;
+  opacity: 0;
+  background: rgba(120, 210, 255, 0.5);
+  filter: blur(4px);
+  transition: opacity .2s, transform .2s;
+}
+
+/* CLICK RIPPLE */
+.ripple {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(120,200,255,0.8);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  animation: rippleEffect .5s ease-out forwards;
+  z-index: 9996;
+}
+
+@keyframes rippleEffect {
+  to {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+  }
+}
+
+/* RCT MODE (Red Gojo) */
+.rct #cursor-inner {
+  background: #ff0000;
+  box-shadow:
+    0 0 15px rgba(255, 100, 100, 1),
+    0 0 25px rgba(255, 60, 60, .9),
+    0 0 45px rgba(255, 40, 40, .7);
+}
+
+.rct #cursor-outer {
+  border-color: rgba(255, 100, 100, .8);
+  box-shadow:
+    0 0 25px rgba(255, 80, 80, .7),
+    0 0 60px rgba(255, 80, 80, .4),
+    0 0 90px rgba(255, 70, 70, .3);
+}
+  * {
+  cursor: none !important;
+}
+    
+    </style>
+    <link rel="stylesheet" href="tes.css" />
+</head>
+<body style="background-color: rgb(223, 248, 246);"">
+    <div id="cursor-inner"></div>
+<div id="cursor-outer"></div>
+<div id="cursor-trail"></div>
+
+    <script>
+const inner = document.getElementById("cursor-inner");
+const outer = document.getElementById("cursor-outer");
+const trail = document.getElementById("cursor-trail");
+
+window.addEventListener("mousemove", (e) => {
+  // Inner cursor
+  inner.style.left = e.pageX + "px";
+  inner.style.top = e.pageY + "px";
+
+  // Outer cursor
+  outer.style.left = e.pageX + "px";
+  outer.style.top = e.pageY + "px";
+
+  // Afterimage / Trail
+  trail.style.left = e.pageX + "px";
+  trail.style.top = e.pageY + "px";
+  trail.style.opacity = 1;
+
+  clearTimeout(window.trailTimeout);
+  window.trailTimeout = setTimeout(() => {
+    trail.style.opacity = 0;
+  }, 80);
+});
+
+// Click Ripple Effect
+window.addEventListener("click", (e) => {
+  const ripple = document.createElement("div");
+  ripple.classList.add("ripple");
+  ripple.style.left = e.pageX + "px";
+  ripple.style.top = e.pageY + "px";
+  document.body.appendChild(ripple);
+
+  setTimeout(() => ripple.remove(), 500);
+});
+
+// RCT Mode ON/OFF (press R on keyboard)
+window.addEventListener("keydown", (e) => {
+  if (e.key.toLowerCase() === "r") {
+    document.body.classList.toggle("rct");
+  }
+});
+</script>
+<div class="loader-container">
+  <div class="bowl">
+    <div class="wave"></div>
+    <span id="percent">0</span>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+  <script src="tes.js"></script>
+</div>
+
+</body>
+</html>
